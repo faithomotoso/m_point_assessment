@@ -65,7 +65,7 @@ class _MapViewState extends State<MapView> {
           Positioned.fill(
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 child: Column(
                   children: [
                     SizedBox(
