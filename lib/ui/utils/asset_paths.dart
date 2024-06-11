@@ -8,6 +8,7 @@ final class SvgPaths {
   static const String searchFilled = "$_base/search-filled.svg";
   static const String searchOutlined = "$_base/search-outline.svg";
   static const String location = "$_base/location.svg";
+  static const String settings = "$_base/settings.svg";
 }
 
 final class ImagePaths {

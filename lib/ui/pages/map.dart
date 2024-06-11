@@ -26,17 +26,25 @@ class _MapViewState extends State<MapView> {
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(child: SearchWidget()),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        ElevatedButton.icon(
+                    SizedBox(
+                      height: 56,
+                      child: Row(
+                        children: [
+                          Expanded(child: const SearchWidget()),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          IconButton(
                             onPressed: () {},
-                            // icon: SvgPicture.asset(SvgPaths.),
-                            label: const SizedBox())
-                      ],
+                            icon: SvgPicture.asset(
+                              SvgPaths.settings,
+                              height: 30,
+                              width: 30,
+                            ),
+                            color: Colors.pink,
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
