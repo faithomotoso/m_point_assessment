@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:m_point_assessment/ui/utils/colors.dart';
 
-import '../utils/svg_paths.dart';
+import '../utils/asset_paths.dart';
 
 class AppBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;

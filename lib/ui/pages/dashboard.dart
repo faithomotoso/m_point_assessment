@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:m_point_assessment/ui/pages/home.dart';
 import 'package:m_point_assessment/ui/widgets/bottom_navigation_bar.dart';
 
 class Dashboard extends StatefulWidget {
@@ -25,6 +26,24 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       body: Stack(
         children: [
+          Positioned.fill(
+            child: ValueListenableBuilder<int>(
+              valueListenable: _navBarIndex,
+              builder: (ctx, index, child) {
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 600),
+                  child: Builder(
+                    builder: (ctx) {
+                      return switch (index) {
+                        2 => const HomePage(),
+                        _ => const SizedBox()
+                      };
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
           Positioned(
             bottom: 20,
             child: SizedBox(
