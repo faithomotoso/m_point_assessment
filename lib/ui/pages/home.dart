@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:m_point_assessment/ui/utils/asset_paths.dart';
 import 'package:m_point_assessment/ui/utils/colors.dart';
+import 'package:m_point_assessment/ui/widgets/home_images_view.dart';
 import 'package:m_point_assessment/ui/widgets/home_welcome_text.dart';
 import 'package:m_point_assessment/ui/widgets/location_overview.dart';
 import 'package:m_point_assessment/ui/widgets/profile_avatar.dart';
@@ -31,67 +32,74 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        child: ListView(
-          padding:
-              EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + 10),
+        child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Positioned.fill(
+                child: ListView(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).viewPadding.top + 10),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      LocationOverview(),
-                      ProfileAvatar(assetPath: ImagePaths.profileImage)
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          LocationOverview(),
+                          ProfileAvatar(assetPath: ImagePaths.profileImage)
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      const HomeWelcomeText(),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: Stats(
+                                title: "BUY",
+                                number: 1034,
+                                boxDecoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.primary),
+                                textColor: Colors.white),
+                          ),
+                          const SizedBox(
+                            width: 30,
+                          ),
+                          Expanded(
+                            child: Stats(
+                                title: "RENT",
+                                number: 2212,
+                                boxDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    gradient: LinearGradient(
+                                        end: Alignment.bottomRight,
+                                        begin: Alignment.topLeft,
+                                        colors: [
+                                          Colors.white.withOpacity(0.5),
+                                          Colors.white.withOpacity(0.7),
+                                          Colors.white.withOpacity(0.9),
+                                          Colors.white
+                                        ])),
+                                textColor: AppColors.c93846B),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  const HomeWelcomeText(),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(width: 20,),
-                      Expanded(
-                        child: Stats(
-                            title: "BUY",
-                            number: 1034,
-                            boxDecoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.primary
-                            ),
-                            textColor: Colors.white),
-                      ),
-                      const SizedBox(width: 30,),
-                      Expanded(
-                        child: Stats(
-                            title: "RENT",
-                            number: 2212,
-                            boxDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                gradient: LinearGradient(
-                                  end: Alignment.bottomRight,
-                                  begin: Alignment.topLeft,
-                                  colors: [
-                                    Colors.white.withOpacity(0.5),
-                                    Colors.white.withOpacity(0.7),
-                                    Colors.white.withOpacity(0.9),
-                                    Colors.white
-                                  ]
-                                )
-                            ),
-                            textColor: AppColors.c93846B),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )
+                )
+              ],
+            )),
+            Positioned.fill(child: const HomeImagesView())
           ],
         ),
       ),

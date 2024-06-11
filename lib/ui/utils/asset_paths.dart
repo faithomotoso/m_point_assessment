@@ -13,4 +13,8 @@ final class ImagePaths {
   static const String _base = "assets/images";
 
   static const String profileImage = "$_base/profile-image.jpg";
+  static const String img1 = "$_base/img1.jpg";
+  static const String img2 = "$_base/img2.jpg";
+  static const String img3 = "$_base/img3.jpg";
+  static const String img4 = "$_base/img4.jpg";
 }

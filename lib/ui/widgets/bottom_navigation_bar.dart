@@ -50,11 +50,13 @@ class AppBottomNavigationBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List<Widget>.from(
           naviItems.indexed.map(
-            (e) => GestureDetector(
-              onTap: () {
-                onItemSelected(e.$1);
-              },
-              child: e.$2,
+            (e) => Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  onItemSelected(e.$1);
+                },
+                child: e.$2,
+              ),
             ),
           ),
         ),
