@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:m_point_assessment/ui/utils/colors.dart';
 
@@ -40,28 +41,34 @@ class AppBottomNavigationBar extends StatelessWidget {
       ),
     ];
 
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.c202020,
-        borderRadius: BorderRadius.circular(100),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List<Widget>.from(
-          naviItems.indexed.map(
-            (e) => Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  onItemSelected(e.$1);
-                },
-                child: e.$2,
+    return KeyboardVisibilityBuilder(builder: (ctx, isKeyboardVisible) {
+      if (isKeyboardVisible) {
+        return const SizedBox();
+      }
+
+      return Container(
+        decoration: BoxDecoration(
+          color: AppColors.c202020,
+          borderRadius: BorderRadius.circular(100),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List<Widget>.from(
+            naviItems.indexed.map(
+              (e) => Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    onItemSelected(e.$1);
+                  },
+                  child: e.$2,
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 

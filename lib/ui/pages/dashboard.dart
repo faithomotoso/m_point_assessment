@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:m_point_assessment/ui/pages/home.dart';
+import 'package:m_point_assessment/ui/pages/map.dart';
 import 'package:m_point_assessment/ui/widgets/bottom_navigation_bar.dart';
 
 class Dashboard extends StatefulWidget {
@@ -35,6 +36,7 @@ class _DashboardState extends State<Dashboard> {
                   child: Builder(
                     builder: (ctx) {
                       return switch (index) {
+                        0 => const MapView(),
                         2 => const HomePage(),
                         _ => const SizedBox()
                       };

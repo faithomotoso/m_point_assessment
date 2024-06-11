@@ -6,6 +6,7 @@ final class SvgPaths {
   static const String home = "$_base/home.svg";
   static const String profile = "$_base/profile.svg";
   static const String searchFilled = "$_base/search-filled.svg";
+  static const String searchOutlined = "$_base/search-outline.svg";
   static const String location = "$_base/location.svg";
 }
 
