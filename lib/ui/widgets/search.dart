@@ -27,6 +27,8 @@ class _SearchWidgetState extends State<SearchWidget> {
       backgroundColor: const MaterialStatePropertyAll(Colors.white),
       surfaceTintColor: const MaterialStatePropertyAll(Colors.white),
       hintText: "Search",
+      elevation: const MaterialStatePropertyAll(0.0),
+      padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 14, vertical: 16)),
       leading: SvgPicture.asset(SvgPaths.searchOutlined),
     );
   }

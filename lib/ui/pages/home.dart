@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             )),
-            Positioned.fill(child: const HomeImagesView())
+            const Positioned.fill(child: HomeImagesView())
           ],
         ),
       ),
