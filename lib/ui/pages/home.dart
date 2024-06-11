@@ -16,7 +16,27 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  late final AnimationController animationController1;
+
+  @override
+  void initState() {
+    super.initState();
+
+    animationController1 = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
+
+    Future.delayed(const Duration(milliseconds: 300)).then((value) {
+      animationController1.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    animationController1.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,11 +64,14 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          LocationOverview(),
-                          ProfileAvatar(assetPath: ImagePaths.profileImage)
+                          LocationOverview(widthAnimationController: animationController1,),
+                          ProfileAvatar(
+                            assetPath: ImagePaths.profileImage,
+                            animationController: animationController1,
+                          )
                         ],
                       ),
                       const SizedBox(
