@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:m_point_assessment/ui/pages/dashboard.dart';
 import 'package:m_point_assessment/ui/utils/colors.dart';
 
 class HomeImageTile extends StatefulWidget {
@@ -51,6 +52,12 @@ class _HomeImageTileState extends State<HomeImageTile>
     sizeAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         addressVisibilityAnimationController.forward();
+      }
+    });
+
+    addressVisibilityAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        animationsComplete.value = true;
       }
     });
   }

@@ -7,7 +7,9 @@ import '../utils/asset_paths.dart';
 class HomeImagesView extends StatefulWidget {
   final AnimationController slideAnimationController;
 
-  const HomeImagesView({required this.slideAnimationController, super.key});
+  const HomeImagesView(
+      {required this.slideAnimationController,
+      super.key});
 
   @override
   State<HomeImagesView> createState() => _HomeImagesViewState();
@@ -71,6 +73,7 @@ class _HomeImagesViewState extends State<HomeImagesView>
         });
       }
     });
+
   }
 
   @override
