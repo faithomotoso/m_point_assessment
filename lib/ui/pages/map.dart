@@ -14,6 +14,8 @@ import 'package:m_point_assessment/ui/widgets/map_marker.dart';
 import 'package:m_point_assessment/ui/widgets/search.dart';
 import 'package:widget_to_marker/widget_to_marker.dart';
 
+import '../utils/colors.dart';
+
 class MapView extends StatefulWidget {
   const MapView({super.key});
 
@@ -31,6 +33,13 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
   final LatLng initialLatLng = const LatLng(6.4299718, 3.3344001);
 
   final Set<Marker> markers = {};
+
+  final List<({String iconPath, String title})> popupMenus = [
+    (iconPath: SvgPaths.shield, title: "Cosy areas"),
+    (iconPath: SvgPaths.wallet, title: "Price"),
+    (iconPath: SvgPaths.trash, title: "Infrastructure"),
+    (iconPath: SvgPaths.layer, title: "Without any layer")
+  ];
 
   @override
   void initState() {
@@ -205,12 +214,39 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             wrapInScaleTransition(
-                              child: BlurryButton(
-                                boxShape: BoxShape.circle,
-                                icon: SvgPicture.asset(SvgPaths.layer,
-                                    color: Colors.white),
-                                boxDecoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
+                              child: PopupMenuButton(
+                                itemBuilder: (ctx) => List<PopupMenuEntry>.from(
+                                    popupMenus.map((e) => PopupMenuItem(
+                                            child: Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              e.iconPath,
+                                              color: AppColors.c928F89,
+                                              height: 20,
+                                              width: 20,
+                                            ),
+                                            const SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                              e.title,
+                                              style: TextStyle(
+                                                  color: AppColors.c928F89),
+                                            )
+                                          ],
+                                        )))),
+                                offset: const Offset(0, -160),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14)),
+                                color: Color.lerp(
+                                    AppColors.primary, Colors.white, 0.95),
+                                child: BlurryButton(
+                                  boxShape: BoxShape.circle,
+                                  icon: SvgPicture.asset(SvgPaths.layer,
+                                      color: Colors.white),
+                                  boxDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
                                 ),
                               ),
                             ),

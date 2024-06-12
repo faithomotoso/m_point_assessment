@@ -12,6 +12,9 @@ final class SvgPaths {
   static const String menu = "$_base/menu.svg";
   static const String send = "$_base/send.svg";
   static const String layer = "$_base/layer.svg";
+  static const String shield = "$_base/shield.svg";
+  static const String wallet = "$_base/wallet.svg";
+  static const String trash = "$_base/trash.svg";
 }
 
 final class ImagePaths {
