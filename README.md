@@ -2,15 +2,15 @@
 
 A new Flutter project.
 
-## Getting Started
+## Running the application
+The application requires a google maps api key for the map view page to work as expected.
 
-This project is a starting point for a Flutter application.
+### Android
+Create a `maps.properties` file in the `android/` directory and add the map api key using the syntax
 
-A few resources to get you started if this is your first Flutter project:
+`MAPS_API_KEY=<key goes here>`
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### iOS
+Create a `GoogleMapsKey.swift` file and add the map api key using the syntax
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+`let googleMapsKey = "<key goes here>";`
