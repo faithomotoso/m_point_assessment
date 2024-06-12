@@ -17,23 +17,75 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  late final AnimationController animationController1;
+  late final AnimationController topSectionAnimationController;
+  late final AnimationController hiNameAnimationController;
+  late final AnimationController headlineTextAnimationController;
+
+  late final AnimationController statsVisibilityAnimController;
+  late final AnimationController statsNumberAnimController;
+  late final Animation<double> statsVisibilityAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    animationController1 = AnimationController(
+    topSectionAnimationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
 
+    hiNameAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 150));
+
+    headlineTextAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 400));
+
+    statsVisibilityAnimController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1500));
+    statsNumberAnimController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 2000));
+    statsVisibilityAnimation = CurvedAnimation(
+        parent: statsVisibilityAnimController, curve: Curves.fastOutSlowIn);
+
+    // Starts the first animation
     Future.delayed(const Duration(milliseconds: 300)).then((value) {
-      animationController1.forward();
+      topSectionAnimationController.forward();
+    });
+
+    topSectionAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        // Trigger animation for `Hi xyz` text
+        hiNameAnimationController.forward();
+      }
+    });
+
+    hiNameAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        headlineTextAnimationController.forward();
+      }
+    });
+
+    headlineTextAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.forward) {
+        Future.delayed(
+            Duration(
+              milliseconds:
+                  (headlineTextAnimationController.duration!.inMilliseconds *
+                          0.8)
+                      .round(),
+            ), () {
+          statsVisibilityAnimController.forward();
+          statsNumberAnimController.forward();
+        });
+      }
     });
   }
 
   @override
   void dispose() {
-    animationController1.dispose();
+    topSectionAnimationController.dispose();
+    hiNameAnimationController.dispose();
+    headlineTextAnimationController.dispose();
+    statsVisibilityAnimController.dispose();
+    statsNumberAnimController.dispose();
     super.dispose();
   }
 
@@ -67,17 +119,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          LocationOverview(widthAnimationController: animationController1,),
+                          LocationOverview(
+                            widthAnimationController:
+                                topSectionAnimationController,
+                          ),
                           ProfileAvatar(
                             assetPath: ImagePaths.profileImage,
-                            animationController: animationController1,
+                            animationController: topSectionAnimationController,
                           )
                         ],
                       ),
                       const SizedBox(
                         height: 12,
                       ),
-                      const HomeWelcomeText(),
+                      HomeWelcomeText(
+                        hiNameAnimController: hiNameAnimationController,
+                        headlineTextAnimController:
+                            headlineTextAnimationController,
+                      ),
                       const SizedBox(
                         height: 16,
                       ),
@@ -93,6 +152,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 boxDecoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: AppColors.primary),
+                                numberAnimationController:
+                                    statsNumberAnimController,
+                                animation: statsVisibilityAnimation,
                                 textColor: Colors.white),
                           ),
                           const SizedBox(
@@ -113,6 +175,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           Colors.white.withOpacity(0.9),
                                           Colors.white
                                         ])),
+                                numberAnimationController:
+                                    statsNumberAnimController,
+                                animation: statsVisibilityAnimation,
                                 textColor: AppColors.c93846B),
                           ),
                         ],
