@@ -5,13 +5,16 @@ import 'package:m_point_assessment/ui/widgets/home_image_tile.dart';
 import '../utils/asset_paths.dart';
 
 class HomeImagesView extends StatefulWidget {
-  const HomeImagesView({super.key});
+  final AnimationController slideAnimationController;
+
+  const HomeImagesView({required this.slideAnimationController, super.key});
 
   @override
   State<HomeImagesView> createState() => _HomeImagesViewState();
 }
 
-class _HomeImagesViewState extends State<HomeImagesView> {
+class _HomeImagesViewState extends State<HomeImagesView>
+    with TickerProviderStateMixin {
   final List<({String assetPath, String address, bool? extendHeight})>
       homeImages = [
     (assetPath: ImagePaths.img1, address: "Glasgow, UK.", extendHeight: null),
@@ -35,62 +38,111 @@ class _HomeImagesViewState extends State<HomeImagesView> {
   final DraggableScrollableController _draggableScrollableController =
       DraggableScrollableController();
 
+  late final Animation<Offset> slideOffsetAnimation;
+
+  late final AnimationController addressScaleAnimationController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    slideOffsetAnimation =
+        Tween<Offset>(begin: const Offset(0, 1), end: const Offset(0, 0))
+            .animate(CurvedAnimation(
+                parent: widget.slideAnimationController,
+                curve: Curves.fastEaseInToSlowEaseOut));
+
+    addressScaleAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(
+        milliseconds: 300,
+      ),
+    );
+
+    widget.slideAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.forward) {
+        Future.delayed(
+            Duration(
+                milliseconds:
+                    (widget.slideAnimationController.duration!.inMilliseconds *
+                            0.8)
+                        .round()), () {
+          addressScaleAnimationController.forward();
+        });
+      }
+    });
+  }
+
   @override
   void dispose() {
     _draggableScrollableController.dispose();
+    addressScaleAnimationController.dispose();
 
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-        shouldCloseOnMinExtent: false,
-        controller: _draggableScrollableController,
-        minChildSize: 0.35,
-        builder: (ctx, controller) {
-          var firstImage = homeImages.first;
-          List otherImages = homeImages.skip(1).toList();
+    final ({double initialSize, double minSize}) verticalSizeConfig =
+        switch (MediaQuery.of(context).size.height) {
+      > 600 => (initialSize: 0.5, minSize: 0.45),
+      _ => (initialSize: 0.35, minSize: 0.30)
+    };
 
-          return Container(
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(18),
-              ),
-            ),
-            child: ListView(
-              controller: controller,
-              padding: EdgeInsets.zero,
-              children: [
-                HomeImageTile(
-                  imagePath: firstImage.assetPath,
-                  address: firstImage.address,
-                  addressAlignment: TextAlign.center,
+    return SlideTransition(
+      position: slideOffsetAnimation,
+      child: DraggableScrollableSheet(
+          shouldCloseOnMinExtent: false,
+          controller: _draggableScrollableController,
+          initialChildSize: verticalSizeConfig.initialSize,
+          minChildSize: verticalSizeConfig.minSize,
+          builder: (ctx, controller) {
+            var firstImage = homeImages.first;
+            List otherImages = homeImages.skip(1).toList();
+
+            return Container(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(18),
                 ),
-                const SizedBox(height: 8),
-                MasonryGridView.count(
-                    controller: controller,
-                    shrinkWrap: true,
-                    primary: false,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    itemCount: otherImages.length,
-                    itemBuilder: (ctx, index) {
-                      var imageRecord = otherImages.elementAt(index);
-                      return HomeImageTile(
-                        imagePath: imageRecord.assetPath,
-                        address: imageRecord.address,
-                        extendVertical: imageRecord.extendHeight ?? false,
-                      );
-                    }),
-              ],
-            ),
-          );
-        });
+              ),
+              child: ListView(
+                controller: controller,
+                padding: EdgeInsets.zero,
+                children: [
+                  HomeImageTile(
+                    imagePath: firstImage.assetPath,
+                    address: firstImage.address,
+                    addressAlignment: TextAlign.center,
+                    scaleAnimationController: addressScaleAnimationController,
+                  ),
+                  const SizedBox(height: 8),
+                  MasonryGridView.count(
+                      controller: controller,
+                      shrinkWrap: true,
+                      primary: false,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      itemCount: otherImages.length,
+                      itemBuilder: (ctx, index) {
+                        var imageRecord = otherImages.elementAt(index);
+                        return HomeImageTile(
+                          imagePath: imageRecord.assetPath,
+                          address: imageRecord.address,
+                          extendVertical: imageRecord.extendHeight ?? false,
+                          scaleAnimationController:
+                              addressScaleAnimationController,
+                        );
+                      }),
+                ],
+              ),
+            );
+          }),
+    );
   }
 }

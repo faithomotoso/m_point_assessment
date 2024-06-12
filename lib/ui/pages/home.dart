@@ -25,44 +25,57 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late final AnimationController statsNumberAnimController;
   late final Animation<double> statsVisibilityAnimation;
 
+  late final AnimationController homeImagesAnimationController;
+
   @override
   void initState() {
     super.initState();
 
     topSectionAnimationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
+        vsync: this, duration: const Duration(milliseconds: 600));
 
     hiNameAnimationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 150));
+        vsync: this, duration: const Duration(milliseconds: 300));
 
     headlineTextAnimationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 400));
+        vsync: this, duration: const Duration(milliseconds: 800));
 
     statsVisibilityAnimController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1500));
+        vsync: this, duration: const Duration(milliseconds: 1800));
     statsNumberAnimController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 2000));
     statsVisibilityAnimation = CurvedAnimation(
         parent: statsVisibilityAnimController, curve: Curves.fastOutSlowIn);
+
+    homeImagesAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1000));
 
     // Starts the first animation
     Future.delayed(const Duration(milliseconds: 300)).then((value) {
       topSectionAnimationController.forward();
     });
 
+    // Trigger Hi xyz text animation
     topSectionAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        // Trigger animation for `Hi xyz` text
         hiNameAnimationController.forward();
       }
     });
 
+    // Trigger headline text animation
     hiNameAnimationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        headlineTextAnimationController.forward();
+      if (status == AnimationStatus.forward) {
+        Future.delayed(
+            Duration(
+                milliseconds:
+                    (hiNameAnimationController.duration!.inMilliseconds * 0.7)
+                        .round()), () {
+          headlineTextAnimationController.forward();
+        });
       }
     });
 
+    // Trigger stats visibility & number count animations
     headlineTextAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.forward) {
         Future.delayed(
@@ -77,6 +90,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         });
       }
     });
+
+    // Trigger home images slide transition
+    statsNumberAnimController.addStatusListener((status) {
+      if (status == AnimationStatus.forward) {
+        Future.delayed(
+            Duration(
+                milliseconds:
+                    (statsNumberAnimController.duration!.inMilliseconds * 0.5)
+                        .round()), () {
+          homeImagesAnimationController.forward();
+        });
+      }
+    });
   }
 
   @override
@@ -86,6 +112,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     headlineTextAnimationController.dispose();
     statsVisibilityAnimController.dispose();
     statsNumberAnimController.dispose();
+    homeImagesAnimationController.dispose();
     super.dispose();
   }
 
@@ -187,7 +214,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 )
               ],
             )),
-            const Positioned.fill(child: HomeImagesView())
+            Positioned.fill(
+                child: HomeImagesView(
+              slideAnimationController: homeImagesAnimationController,
+            ))
           ],
         ),
       ),
