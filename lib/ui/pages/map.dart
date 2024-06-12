@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:m_point_assessment/ui/utils/asset_paths.dart';
 import 'package:m_point_assessment/ui/widgets/blurry_button.dart';
+import 'package:m_point_assessment/ui/widgets/bottom_navigation_bar.dart';
 import 'package:m_point_assessment/ui/widgets/search.dart';
 
 class MapView extends StatefulWidget {
@@ -113,69 +114,73 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                         ],
                       ),
                     ),
-                    const Spacer(),
-                    KeyboardVisibilityBuilder(
-                      builder: (context, isKeyboardVisible) {
-                        if (isKeyboardVisible) {
-                          return const SizedBox();
-                        }
-
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  wrapInScaleTransition(
-                                    child: BlurryButton(
-                                      icon: SvgPicture.asset(SvgPaths.layer,
-                                          color: Colors.white),
-                                      boxDecoration:
-                                          const BoxDecoration(shape: BoxShape.circle),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  wrapInScaleTransition(
-                                    child: BlurryButton(
-                                      icon: SvgPicture.asset(SvgPaths.send,
-                                          color: Colors.white),
-                                      boxDecoration:
-                                          const BoxDecoration(shape: BoxShape.circle),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              wrapInScaleTransition(
-                                child: BlurryButton(
-                                  icon: SvgPicture.asset(
-                                    SvgPaths.menu,
-                                    color: Colors.white,
-                                  ),
-                                  label: "List of variants",
-                                  boxDecoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    ),
-                    const SizedBox(
-                      height: 100,
-                    )
                   ],
                 ),
               ),
             ),
-          )
+          ),
+          Positioned(
+              top: (AppBottomNavigationBar.getNavbarPosition().position?.dy ??
+                      80) -
+                  (AppBottomNavigationBar.getNavbarPosition().size?.height ??
+                      100) -
+                  30,
+              child: KeyboardVisibilityBuilder(
+                  builder: (context, isKeyboardVisible) {
+                if (isKeyboardVisible) {
+                  return const SizedBox();
+                }
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.93,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            wrapInScaleTransition(
+                              child: BlurryButton(
+                                icon: SvgPicture.asset(SvgPaths.layer,
+                                    color: Colors.white),
+                                boxDecoration:
+                                    const BoxDecoration(shape: BoxShape.circle),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            wrapInScaleTransition(
+                              child: BlurryButton(
+                                icon: SvgPicture.asset(SvgPaths.send,
+                                    color: Colors.white),
+                                boxDecoration:
+                                    const BoxDecoration(shape: BoxShape.circle),
+                              ),
+                            ),
+                          ],
+                        ),
+                        wrapInScaleTransition(
+                          child: BlurryButton(
+                            icon: SvgPicture.asset(
+                              SvgPaths.menu,
+                              color: Colors.white,
+                            ),
+                            label: "List of variants",
+                            boxDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }))
         ],
       ),
     );

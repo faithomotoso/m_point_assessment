@@ -9,6 +9,8 @@ class AppBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onItemSelected;
 
+  static final GlobalKey navBarKey = GlobalKey();
+
   const AppBottomNavigationBar({
     required this.selectedIndex,
     required this.onItemSelected,
@@ -47,6 +49,7 @@ class AppBottomNavigationBar extends StatelessWidget {
       }
 
       return Container(
+        key: navBarKey,
         decoration: BoxDecoration(
           color: AppColors.c202020,
           borderRadius: BorderRadius.circular(100),
@@ -69,6 +72,15 @@ class AppBottomNavigationBar extends StatelessWidget {
         ),
       );
     });
+  }
+
+  static ({Offset? position, Size? size}) getNavbarPosition() {
+    RenderBox? renderBox =
+        navBarKey.currentContext?.findRenderObject() as RenderBox?;
+    return (
+      position: renderBox?.localToGlobal(Offset.zero),
+      size: renderBox?.size
+    );
   }
 }
 
