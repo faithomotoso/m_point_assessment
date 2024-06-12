@@ -10,7 +10,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:m_point_assessment/ui/utils/asset_paths.dart';
 import 'package:m_point_assessment/ui/widgets/blurry_button.dart';
 import 'package:m_point_assessment/ui/widgets/bottom_navigation_bar.dart';
+import 'package:m_point_assessment/ui/widgets/map_marker.dart';
 import 'package:m_point_assessment/ui/widgets/search.dart';
+import 'package:widget_to_marker/widget_to_marker.dart';
 
 class MapView extends StatefulWidget {
   const MapView({super.key});
@@ -26,16 +28,24 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
 
   late final AnimationController sizeAnimationController;
 
+  final LatLng initialLatLng = const LatLng(6.4299718, 3.3344001);
+
+  final Set<Marker> markers = {};
+
   @override
   void initState() {
-    super.initState();
+    initMarkers();
 
     sizeAnimationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 600));
 
     mapController.addListener(() {
-      _loadMapTheme();
+      _loadMapTheme().then((value) {
+        sizeAnimationController.forward();
+      });
     });
+
+    super.initState();
   }
 
   @override
@@ -45,7 +55,7 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void _loadMapTheme() async {
+  Future<void> _loadMapTheme() async {
     if (!isStyleSet) {
       try {
         String mapStyle =
@@ -53,12 +63,62 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
 
         mapController.value?.setMapStyle(mapStyle);
         isStyleSet = true;
-
-        sizeAnimationController.forward();
       } catch (e) {
         log(e.toString());
       }
     }
+  }
+
+  initMarkers() async {
+    markers.add(
+      Marker(
+        markerId: const MarkerId('1'),
+        position:
+            LatLng(initialLatLng.latitude + 0.0344, initialLatLng.longitude),
+        icon: await const MapMarker(text: "11 mn").toBitmapDescriptor(
+          logicalSize: const Size(200, 200),
+          imageSize: const Size(200, 200),
+        ),
+      ),
+    );
+
+    markers.add(
+      Marker(
+        markerId: const MarkerId('2'),
+        position: LatLng(
+            initialLatLng.latitude - 0.0274, initialLatLng.longitude - 0.006),
+        icon: await const MapMarker(text: "13.5 mn").toBitmapDescriptor(
+          logicalSize: const Size(200, 200),
+          imageSize: const Size(200, 200),
+        ),
+      ),
+    );
+
+    markers.add(
+      Marker(
+        markerId: const MarkerId('3'),
+        position: LatLng(
+            initialLatLng.latitude + 0.0144, initialLatLng.longitude - 0.01),
+        icon: await const MapMarker(text: "9.85 mn").toBitmapDescriptor(
+          logicalSize: const Size(200, 200),
+          imageSize: const Size(200, 200),
+        ),
+      ),
+    );
+
+    markers.add(
+      Marker(
+        markerId: const MarkerId('4'),
+        position: LatLng(
+            initialLatLng.latitude + 0.0034, initialLatLng.longitude + 0.015),
+        icon: await const MapMarker(text: "6.95 mn").toBitmapDescriptor(
+          logicalSize: const Size(200, 200),
+          imageSize: const Size(200, 200),
+        ),
+      ),
+    );
+
+    setState(() {});
   }
 
   @override
@@ -75,8 +135,9 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
               onMapCreated: (controller) {
                 mapController.value = controller;
               },
-              initialCameraPosition: const CameraPosition(
-                  target: LatLng(6.4299718, 3.3344001), zoom: 13.0),
+              initialCameraPosition:
+                  CameraPosition(target: initialLatLng, zoom: 12.0),
+              markers: markers,
             ),
           )),
           Positioned.fill(
@@ -145,10 +206,12 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                           children: [
                             wrapInScaleTransition(
                               child: BlurryButton(
+                                boxShape: BoxShape.circle,
                                 icon: SvgPicture.asset(SvgPaths.layer,
                                     color: Colors.white),
-                                boxDecoration:
-                                    const BoxDecoration(shape: BoxShape.circle),
+                                boxDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
                               ),
                             ),
                             const SizedBox(
@@ -156,10 +219,12 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                             ),
                             wrapInScaleTransition(
                               child: BlurryButton(
+                                boxShape: BoxShape.circle,
                                 icon: SvgPicture.asset(SvgPaths.send,
                                     color: Colors.white),
-                                boxDecoration:
-                                    const BoxDecoration(shape: BoxShape.circle),
+                                boxDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
                               ),
                             ),
                           ],

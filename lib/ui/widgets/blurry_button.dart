@@ -5,11 +5,13 @@ class BlurryButton extends StatelessWidget {
   final Widget icon;
   final String? label;
   final BoxDecoration boxDecoration;
+  final BoxShape? boxShape;
 
   const BlurryButton({
     required this.icon,
     required this.boxDecoration,
     this.label,
+    this.boxShape,
     super.key,
   });
 
@@ -18,6 +20,7 @@ class BlurryButton extends StatelessWidget {
     return GestureDetector(
       child: BlurFilter(
           borderRadius: boxDecoration.borderRadius,
+          boxShape: boxShape,
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration:
