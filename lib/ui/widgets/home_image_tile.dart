@@ -45,7 +45,9 @@ class _HomeImageTileState extends State<HomeImageTile>
 
     widget.scaleAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        sizeAnimationController.forward();
+        Future.delayed(const Duration(milliseconds: 500), () {
+          sizeAnimationController.forward();
+        });
       }
     });
 
@@ -88,59 +90,61 @@ class _HomeImageTileState extends State<HomeImageTile>
           ),
           Positioned.fill(
             bottom: 8,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: AnimatedBuilder(
-                  animation: widget.scaleAnimationController,
-                  builder: (ctx, child) {
-                    return Transform.scale(
-                      scale: widget.scaleAnimationController.value,
-                      child: child,
-                    );
-                  },
-                  child: SizeTransition(
-                    sizeFactor: sizeAnimation,
-                    axis: Axis.vertical,
-                    axisAlignment: -3.0,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(60),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                        child: Container(
-                          width: double.maxFinite,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Color.lerp(
-                                    AppColors.c93846B, Colors.white, 0.5)!
-                                .withOpacity(0.4),
-                          ),
-                          padding: const EdgeInsetsDirectional.only(
-                              start: 20, end: 4),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Center(
-                                  child: FadeTransition(
-                                    opacity:
-                                        addressVisibilityAnimationController,
-                                    child: Text(
-                                      widget.address,
-                                      textAlign: widget.addressAlignment,
+            child: Column(
+              children: [
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: AnimatedBuilder(
+                    animation: widget.scaleAnimationController,
+                    builder: (ctx, child) {
+                      return Transform.scale(
+                        scale: widget.scaleAnimationController.value,
+                        child: child,
+                      );
+                    },
+                    child: SizeTransition(
+                      sizeFactor: sizeAnimation,
+                      axis: Axis.horizontal,
+                      axisAlignment: 3.0,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                          child: Container(
+                            width: double.maxFinite,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color.lerp(
+                                      AppColors.c93846B, Colors.white, 0.5)!
+                                  .withOpacity(0.4),
+                            ),
+                            padding: const EdgeInsetsDirectional.only(
+                                start: 20, end: 4),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Center(
+                                    child: FadeTransition(
+                                      opacity:
+                                          addressVisibilityAnimationController,
+                                      child: Text(
+                                        widget.address,
+                                        textAlign: widget.addressAlignment,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              const RoundBtn()
-                            ],
+                                const RoundBtn()
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
           )
         ],
