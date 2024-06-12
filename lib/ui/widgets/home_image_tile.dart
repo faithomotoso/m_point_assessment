@@ -45,9 +45,7 @@ class _HomeImageTileState extends State<HomeImageTile>
 
     widget.scaleAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          sizeAnimationController.forward();
-        });
+        sizeAnimationController.forward();
       }
     });
 
