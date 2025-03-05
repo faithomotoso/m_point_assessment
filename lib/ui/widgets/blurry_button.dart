@@ -23,8 +23,8 @@ class BlurryButton extends StatelessWidget {
           boxShape: boxShape,
           child: Container(
             padding: const EdgeInsets.all(12),
-            decoration:
-                boxDecoration.copyWith(color: Colors.white.withOpacity(0.4)),
+            decoration: boxDecoration.copyWith(
+                color: Colors.white.withValues(alpha: 0.4)),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

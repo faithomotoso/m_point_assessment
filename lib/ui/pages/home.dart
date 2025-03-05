@@ -124,10 +124,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           gradient: LinearGradient(
             end: Alignment.bottomRight,
             colors: [
-              AppColors.primary.withOpacity(0.05),
-              AppColors.primary.withOpacity(0.1),
-              AppColors.primary.withOpacity(0.2),
-              AppColors.primary.withOpacity(0.3),
+              AppColors.primary.withValues(alpha: 0.05),
+              AppColors.primary.withValues(alpha: 0.1),
+              AppColors.primary.withValues(alpha: 0.2),
+              AppColors.primary.withValues(alpha: 0.3),
             ],
           ),
         ),
@@ -197,9 +197,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         end: Alignment.bottomRight,
                                         begin: Alignment.topLeft,
                                         colors: [
-                                          Colors.white.withOpacity(0.5),
-                                          Colors.white.withOpacity(0.7),
-                                          Colors.white.withOpacity(0.9),
+                                          Colors.white.withValues(alpha: 0.5),
+                                          Colors.white.withValues(alpha: 0.7),
+                                          Colors.white.withValues(alpha: 0.9),
                                           Colors.white
                                         ])),
                                 numberAnimationController:

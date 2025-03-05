@@ -63,7 +63,8 @@ class _LocationOverviewState extends State<LocationOverview>
             children: [
               SvgPicture.asset(
                 SvgPaths.location,
-                color: AppColors.c93846B,
+                colorFilter:
+                    ColorFilter.mode(AppColors.c93846B, BlendMode.srcIn),
                 height: 20,
                 width: 20,
               ),

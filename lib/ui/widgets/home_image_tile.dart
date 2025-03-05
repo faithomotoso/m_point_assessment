@@ -115,7 +115,7 @@ class _HomeImageTileState extends State<HomeImageTile>
                             decoration: BoxDecoration(
                               color: Color.lerp(
                                       AppColors.c93846B, Colors.white, 0.5)!
-                                  .withOpacity(0.4),
+                                  .withValues(alpha: 0.4),
                             ),
                             padding: const EdgeInsetsDirectional.only(
                                 start: 20, end: 4),

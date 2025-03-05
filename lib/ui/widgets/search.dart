@@ -24,11 +24,12 @@ class _SearchWidgetState extends State<SearchWidget> {
   Widget build(BuildContext context) {
     return SearchBar(
       controller: _controller,
-      backgroundColor: const MaterialStatePropertyAll(Colors.white),
-      surfaceTintColor: const MaterialStatePropertyAll(Colors.white),
+      backgroundColor: const WidgetStatePropertyAll(Colors.white),
+      surfaceTintColor: const WidgetStatePropertyAll(Colors.white),
       hintText: "Search",
-      elevation: const MaterialStatePropertyAll(0.0),
-      padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 14, vertical: 16)),
+      elevation: const WidgetStatePropertyAll(0.0),
+      padding: const WidgetStatePropertyAll(
+          EdgeInsets.symmetric(horizontal: 14, vertical: 16)),
       leading: SvgPicture.asset(SvgPaths.searchOutlined),
     );
   }

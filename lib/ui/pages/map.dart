@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -221,7 +220,9 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                                           children: [
                                             SvgPicture.asset(
                                               e.iconPath,
-                                              color: AppColors.c928F89,
+                                              colorFilter: ColorFilter.mode(
+                                                  AppColors.c928F89,
+                                                  BlendMode.srcIn),
                                               height: 20,
                                               width: 20,
                                             ),
@@ -242,8 +243,11 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                                     AppColors.primary, Colors.white, 0.95),
                                 child: BlurryButton(
                                   boxShape: BoxShape.circle,
-                                  icon: SvgPicture.asset(SvgPaths.layer,
-                                      color: Colors.white),
+                                  icon: SvgPicture.asset(
+                                    SvgPaths.layer,
+                                    colorFilter: const ColorFilter.mode(
+                                        Colors.white, BlendMode.srcIn),
+                                  ),
                                   boxDecoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(100),
                                   ),
@@ -256,8 +260,11 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                             wrapInScaleTransition(
                               child: BlurryButton(
                                 boxShape: BoxShape.circle,
-                                icon: SvgPicture.asset(SvgPaths.send,
-                                    color: Colors.white),
+                                icon: SvgPicture.asset(
+                                  SvgPaths.send,
+                                  colorFilter: const ColorFilter.mode(
+                                      Colors.white, BlendMode.srcIn),
+                                ),
                                 boxDecoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(100),
                                 ),
@@ -269,7 +276,8 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                           child: BlurryButton(
                             icon: SvgPicture.asset(
                               SvgPaths.menu,
-                              color: Colors.white,
+                              colorFilter: const ColorFilter.mode(
+                                  Colors.white, BlendMode.srcIn),
                             ),
                             label: "List of variants",
                             boxDecoration: BoxDecoration(
