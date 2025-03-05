@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:m_point_assessment/ui/pages/home.dart';
 import 'package:m_point_assessment/ui/pages/map.dart';
