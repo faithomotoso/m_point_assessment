@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:m_point_assessment/ui/utils/colors.dart';
 
-class HomeWelcomeText extends StatelessWidget {
+class HomeWelcomeText extends StatefulWidget {
   final AnimationController hiNameAnimController;
   final AnimationController headlineTextAnimController;
 
@@ -11,12 +11,28 @@ class HomeWelcomeText extends StatelessWidget {
       super.key});
 
   @override
+  State<HomeWelcomeText> createState() => _HomeWelcomeTextState();
+}
+
+class _HomeWelcomeTextState extends State<HomeWelcomeText> {
+  late Animation<Offset> offsetAnimation;
+
+  @override
+  void initState() {
+    offsetAnimation = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+        .animate(widget.headlineTextAnimController);
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         FadeTransition(
-          opacity: hiNameAnimController,
+          opacity: widget.hiNameAnimController,
           child: Text(
             "Hi, Marina",
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
@@ -26,30 +42,40 @@ class HomeWelcomeText extends StatelessWidget {
         const SizedBox(
           height: 4,
         ),
-        SizeTransition(
-          sizeFactor: headlineTextAnimController,
-          axis: Axis.vertical,
-          axisAlignment: -3.0,
-          child: Text(
-            "let's select your",
-            style: Theme.of(context)
-                .textTheme
-                .headlineLarge!
-                .copyWith(fontWeight: FontWeight.w600),
+        ClipRRect(
+          child: Stack(
+            clipBehavior: Clip.hardEdge,
+            children: [
+              SlideTransition(
+                position: offsetAnimation,
+                child: Text(
+                  "let's select your",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineLarge!
+                      .copyWith(fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
           ),
         ),
-        SizeTransition(
-          sizeFactor: headlineTextAnimController,
-          axis: Axis.vertical,
-          axisAlignment: -3.0,
-          child: Text(
-            "perfect place",
-            style: Theme.of(context)
-                .textTheme
-                .headlineLarge!
-                .copyWith(fontWeight: FontWeight.w600),
+        ClipRRect(
+          child: Stack(
+            clipBehavior: Clip.hardEdge,
+            children: [
+              SlideTransition(
+                position: offsetAnimation,
+                child: Text(
+                  "perfect place",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineLarge!
+                      .copyWith(fontWeight: FontWeight.w600),
+                ),
+              )
+            ],
           ),
-        )
+        ),
       ],
     );
   }

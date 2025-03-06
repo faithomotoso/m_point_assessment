@@ -54,8 +54,6 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         }
       });
 
-    initMarkers();
-
     sizeAnimationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 600));
 
@@ -64,6 +62,7 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         _loadMapTheme(),
         Future.delayed(const Duration(milliseconds: 800))
       ]).then((value) {
+        initMarkers();
         sizeAnimationController.forward();
       });
     });
