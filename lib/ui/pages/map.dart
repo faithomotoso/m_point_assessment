@@ -15,6 +15,8 @@ import 'package:widget_to_marker/widget_to_marker.dart';
 
 import '../utils/colors.dart';
 
+typedef PopupItem = ({String iconPath, String title});
+
 class MapView extends StatefulWidget {
   const MapView({super.key});
 
@@ -33,7 +35,9 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
 
   final Set<Marker> markers = {};
 
-  final List<({String iconPath, String title})> popupMenus = [
+  late final ValueNotifier<PopupItem?> selectedPopupItem;
+
+  final List<PopupItem> popupMenus = [
     (iconPath: SvgPaths.shield, title: "Cosy areas"),
     (iconPath: SvgPaths.wallet, title: "Price"),
     (iconPath: SvgPaths.trash, title: "Infrastructure"),
@@ -42,6 +46,14 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    selectedPopupItem = ValueNotifier(popupMenus[1])
+      ..addListener(() {
+        if ([popupMenus[1], popupMenus.last]
+            .contains(selectedPopupItem.value)) {
+          initMarkers();
+        }
+      });
+
     initMarkers();
 
     sizeAnimationController = AnimationController(
@@ -64,6 +76,7 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
     mapController.value?.dispose();
     mapStyleNotifier.dispose();
     sizeAnimationController.dispose();
+    selectedPopupItem.dispose();
     super.dispose();
   }
 
@@ -80,14 +93,23 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
   }
 
   initMarkers() async {
+    Size size = const Size(300, 300);
+
+    bool showBuilding = selectedPopupItem.value == popupMenus.last;
+
+    markers.clear();
+
     markers.add(
       Marker(
         markerId: const MarkerId('1'),
         position:
             LatLng(initialLatLng.latitude + 0.0344, initialLatLng.longitude),
-        icon: await const MapMarker(text: "11 mn").toBitmapDescriptor(
-          logicalSize: const Size(200, 200),
-          imageSize: const Size(200, 200),
+        icon: await MapMarker(
+          text: "11 mn",
+          showBuilding: showBuilding,
+        ).toBitmapDescriptor(
+          logicalSize: size,
+          imageSize: size,
         ),
       ),
     );
@@ -97,9 +119,12 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         markerId: const MarkerId('2'),
         position: LatLng(
             initialLatLng.latitude - 0.0274, initialLatLng.longitude - 0.006),
-        icon: await const MapMarker(text: "13.5 mn").toBitmapDescriptor(
-          logicalSize: const Size(200, 200),
-          imageSize: const Size(200, 200),
+        icon: await MapMarker(
+          text: "13.5 mn",
+          showBuilding: showBuilding,
+        ).toBitmapDescriptor(
+          logicalSize: size,
+          imageSize: size,
         ),
       ),
     );
@@ -109,9 +134,12 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         markerId: const MarkerId('3'),
         position: LatLng(
             initialLatLng.latitude + 0.0144, initialLatLng.longitude - 0.01),
-        icon: await const MapMarker(text: "9.85 mn").toBitmapDescriptor(
-          logicalSize: const Size(200, 200),
-          imageSize: const Size(200, 200),
+        icon: await MapMarker(
+          text: "9.85 mn",
+          showBuilding: showBuilding,
+        ).toBitmapDescriptor(
+          logicalSize: size,
+          imageSize: size,
         ),
       ),
     );
@@ -121,9 +149,12 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         markerId: const MarkerId('4'),
         position: LatLng(
             initialLatLng.latitude + 0.0034, initialLatLng.longitude + 0.015),
-        icon: await const MapMarker(text: "6.95 mn").toBitmapDescriptor(
-          logicalSize: const Size(200, 200),
-          imageSize: const Size(200, 200),
+        icon: await MapMarker(
+          text: "6.95 mn",
+          showBuilding: showBuilding,
+        ).toBitmapDescriptor(
+          logicalSize: size,
+          imageSize: size,
         ),
       ),
     );
@@ -168,7 +199,8 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                         children: [
                           Expanded(
                               child: wrapInScaleTransition(
-                                  child: const SearchWidget())),
+                                  child: const SearchWidget(),
+                                  alignment: Alignment.topCenter)),
                           const SizedBox(
                             width: 12,
                           ),
@@ -222,14 +254,19 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                             wrapInScaleTransition(
                               child: PopupMenuButton(
                                 itemBuilder: (ctx) => List<PopupMenuEntry>.from(
-                                    popupMenus.map((e) => PopupMenuItem(
-                                            child: Row(
+                                  popupMenus.map(
+                                    (e) {
+                                      Color color = e == selectedPopupItem.value
+                                          ? AppColors.primary
+                                          : AppColors.c928F89;
+
+                                      return PopupMenuItem(
+                                        child: Row(
                                           children: [
                                             SvgPicture.asset(
                                               e.iconPath,
                                               colorFilter: ColorFilter.mode(
-                                                  AppColors.c928F89,
-                                                  BlendMode.srcIn),
+                                                  color, BlendMode.srcIn),
                                               height: 20,
                                               width: 20,
                                             ),
@@ -238,11 +275,17 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                                             ),
                                             Text(
                                               e.title,
-                                              style: TextStyle(
-                                                  color: AppColors.c928F89),
+                                              style: TextStyle(color: color),
                                             )
                                           ],
-                                        )))),
+                                        ),
+                                        onTap: () {
+                                          selectedPopupItem.value = e;
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
                                 offset: const Offset(0, -160),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(14)),
@@ -302,8 +345,11 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
     );
   }
 
-  Widget wrapInScaleTransition({required Widget child}) => ScaleTransition(
+  Widget wrapInScaleTransition(
+          {required Widget child, Alignment alignment = Alignment.center}) =>
+      ScaleTransition(
         scale: sizeAnimationController,
+        alignment: alignment,
         child: child,
       );
 }

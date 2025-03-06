@@ -15,6 +15,7 @@ final class SvgPaths {
   static const String shield = "$_base/shield.svg";
   static const String wallet = "$_base/wallet.svg";
   static const String trash = "$_base/trash.svg";
+  static const String building = "$_base/building.svg";
 }
 
 final class ImagePaths {
