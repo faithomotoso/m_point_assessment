@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:m_point_assessment/ui/utils/asset_paths.dart';
 import 'package:m_point_assessment/ui/utils/colors.dart';
@@ -119,107 +121,121 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            end: Alignment.bottomRight,
-            colors: [
-              AppColors.primary.withValues(alpha: 0.05),
-              AppColors.primary.withValues(alpha: 0.1),
-              AppColors.primary.withValues(alpha: 0.2),
-              AppColors.primary.withValues(alpha: 0.3),
-            ],
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.0),
+              ),
+            ),
           ),
-        ),
-        child: Stack(
-          children: [
-            Positioned.fill(
-                child: ListView(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).viewPadding.top + 10),
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          LocationOverview(
-                            widthAnimationController:
-                                topSectionAnimationController,
-                          ),
-                          ProfileAvatar(
-                            assetPath: ImagePaths.profileImage,
-                            animationController: topSectionAnimationController,
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      HomeWelcomeText(
-                        hiNameAnimController: hiNameAnimationController,
-                        headlineTextAnimController:
-                            headlineTextAnimationController,
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: Stats(
-                                title: "BUY",
-                                number: 1034,
-                                boxDecoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.primary),
-                                numberAnimationController:
-                                    statsNumberAnimController,
-                                animation: statsVisibilityAnimation,
-                                textColor: Colors.white),
-                          ),
-                          const SizedBox(
-                            width: 30,
-                          ),
-                          Expanded(
-                            child: Stats(
-                                title: "RENT",
-                                number: 2212,
-                                boxDecoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    gradient: LinearGradient(
-                                        end: Alignment.bottomRight,
-                                        begin: Alignment.topLeft,
-                                        colors: [
-                                          Colors.white.withValues(alpha: 0.5),
-                                          Colors.white.withValues(alpha: 0.7),
-                                          Colors.white.withValues(alpha: 0.9),
-                                          Colors.white
-                                        ])),
-                                numberAnimationController:
-                                    statsNumberAnimController,
-                                animation: statsVisibilityAnimation,
-                                textColor: AppColors.c93846B),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            )),
-            Positioned.fill(
-                child: HomeImagesView(
-              slideAnimationController: homeImagesAnimationController,
-            ))
-          ],
-        ),
+          Positioned(
+            right: -80,
+            top: MediaQuery.sizeOf(context).height * 0.4,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(
+                height: 200,
+                width: 300,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.25),
+                  shape: BoxShape.circle,
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                  child:
+                      const SizedBox(), // For some reason, this is needed to trigger the blur
+                ),
+              ),
+            ),
+          ),
+          Positioned.fill(
+              child: ListView(
+            padding: EdgeInsets.only(
+                top: MediaQuery.of(context).viewPadding.top + 10),
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        LocationOverview(
+                          widthAnimationController:
+                              topSectionAnimationController,
+                        ),
+                        ProfileAvatar(
+                          assetPath: ImagePaths.profileImage,
+                          animationController: topSectionAnimationController,
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    HomeWelcomeText(
+                      hiNameAnimController: hiNameAnimationController,
+                      headlineTextAnimController:
+                          headlineTextAnimationController,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Expanded(
+                          child: Stats(
+                              title: "BUY",
+                              number: 1034,
+                              boxDecoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.primary),
+                              numberAnimationController:
+                                  statsNumberAnimController,
+                              animation: statsVisibilityAnimation,
+                              textColor: Colors.white),
+                        ),
+                        const SizedBox(
+                          width: 30,
+                        ),
+                        Expanded(
+                          child: Stats(
+                              title: "RENT",
+                              number: 2212,
+                              boxDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: LinearGradient(
+                                      end: Alignment.bottomRight,
+                                      begin: Alignment.topLeft,
+                                      colors: [
+                                        Colors.white.withValues(alpha: 0.5),
+                                        Colors.white.withValues(alpha: 0.7),
+                                        Colors.white.withValues(alpha: 0.9),
+                                        Colors.white
+                                      ])),
+                              numberAnimationController:
+                                  statsNumberAnimController,
+                              animation: statsVisibilityAnimation,
+                              textColor: AppColors.c93846B),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )),
+          Positioned.fill(
+              child: HomeImagesView(
+            slideAnimationController: homeImagesAnimationController,
+          ))
+        ],
       ),
     );
   }

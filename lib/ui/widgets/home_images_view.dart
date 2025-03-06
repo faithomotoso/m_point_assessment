@@ -87,7 +87,7 @@ class _HomeImagesViewState extends State<HomeImagesView>
   @override
   Widget build(BuildContext context) {
     final ({double initialSize, double minSize}) verticalSizeConfig =
-        switch (MediaQuery.of(context).size.height) {
+        switch (MediaQuery.sizeOf(context).height) {
       > 600 => (initialSize: 0.5, minSize: 0.45),
       _ => (initialSize: 0.35, minSize: 0.30)
     };
