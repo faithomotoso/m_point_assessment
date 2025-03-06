@@ -72,7 +72,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 milliseconds:
                     (hiNameAnimationController.duration!.inMilliseconds * 0.7)
                         .round()), () {
-          headlineTextAnimationController.forward();
+          if (mounted) {
+            headlineTextAnimationController.forward();
+          }
         });
       }
     });
@@ -87,8 +89,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           0.8)
                       .round(),
             ), () {
-          statsVisibilityAnimController.forward();
-          statsNumberAnimController.forward();
+          if (mounted) {
+            statsVisibilityAnimController.forward();
+            statsNumberAnimController.forward();
+          }
         });
       }
     });
@@ -101,7 +105,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 milliseconds:
                     (statsNumberAnimController.duration!.inMilliseconds * 0.5)
                         .round()), () {
-          homeImagesAnimationController.forward();
+          if (mounted) {
+            homeImagesAnimationController.forward();
+          }
         });
       }
     });
@@ -132,21 +138,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
           Positioned(
             right: -80,
-            top: MediaQuery.sizeOf(context).height * 0.4,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Container(
-                height: 200,
-                width: 300,
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.25),
-                  shape: BoxShape.circle,
-                ),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                  child:
-                      const SizedBox(), // For some reason, this is needed to trigger the blur
-                ),
+            top: MediaQuery.sizeOf(context).height * 0.35,
+            child: Container(
+              height: 300,
+              width: 400,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.25),
+                shape: BoxShape.circle,
+              ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 300, sigmaY: 300),
+                child:
+                    const SizedBox(), // For some reason, this is needed to trigger the blur
               ),
             ),
           ),

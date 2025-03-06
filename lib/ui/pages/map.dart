@@ -25,7 +25,7 @@ class MapView extends StatefulWidget {
 class _MapViewState extends State<MapView> with TickerProviderStateMixin {
   final ValueNotifier<GoogleMapController?> mapController =
       ValueNotifier<GoogleMapController?>(null);
-  bool isStyleSet = false;
+  final ValueNotifier<String?> mapStyleNotifier = ValueNotifier(null);
 
   late final AnimationController sizeAnimationController;
 
@@ -48,7 +48,10 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         vsync: this, duration: const Duration(milliseconds: 600));
 
     mapController.addListener(() {
-      _loadMapTheme().then((value) {
+      Future.wait([
+        _loadMapTheme(),
+        Future.delayed(const Duration(milliseconds: 800))
+      ]).then((value) {
         sizeAnimationController.forward();
       });
     });
@@ -59,18 +62,17 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
   @override
   void dispose() {
     mapController.value?.dispose();
+    mapStyleNotifier.dispose();
     sizeAnimationController.dispose();
     super.dispose();
   }
 
   Future<void> _loadMapTheme() async {
-    if (!isStyleSet) {
+    if ((mapStyleNotifier.value ?? "").isEmpty) {
       try {
         String mapStyle =
             await rootBundle.loadString("assets/map_theme/map_theme.json");
-
-        mapController.value?.setMapStyle(mapStyle);
-        isStyleSet = true;
+        mapStyleNotifier.value = mapStyle;
       } catch (e) {
         log(e.toString());
       }
@@ -139,14 +141,19 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
             decoration: const BoxDecoration(
               color: Colors.black,
             ),
-            child: GoogleMap(
-              onMapCreated: (controller) {
-                mapController.value = controller;
-              },
-              initialCameraPosition:
-                  CameraPosition(target: initialLatLng, zoom: 12.0),
-              markers: markers,
-            ),
+            child: ValueListenableBuilder<String?>(
+                valueListenable: mapStyleNotifier,
+                builder: (ctx, style, child) {
+                  return GoogleMap(
+                    style: style,
+                    onMapCreated: (controller) {
+                      mapController.value = controller;
+                    },
+                    initialCameraPosition:
+                        CameraPosition(target: initialLatLng, zoom: 12.0),
+                    markers: markers,
+                  );
+                }),
           )),
           Positioned.fill(
             child: SafeArea(

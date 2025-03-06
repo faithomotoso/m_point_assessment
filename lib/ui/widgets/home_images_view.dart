@@ -104,7 +104,7 @@ class _HomeImagesViewState extends State<HomeImagesView>
             List otherImages = homeImages.skip(1).toList();
 
             return Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(
