@@ -127,7 +127,7 @@ class _HomeImagesViewState extends State<HomeImagesView>
                       shrinkWrap: true,
                       primary: false,
                       physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
+                      padding: EdgeInsets.zero.copyWith(bottom: 50),
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
@@ -140,6 +140,7 @@ class _HomeImagesViewState extends State<HomeImagesView>
                           extendVertical: imageRecord.extendHeight ?? false,
                           scaleAnimationController:
                               addressScaleAnimationController,
+                          addressAlignment: TextAlign.center,
                         );
                       }),
                 ],
