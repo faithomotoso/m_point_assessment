@@ -52,10 +52,6 @@ class _HomeImageTileState extends State<HomeImageTile>
     addressVisibilityAnimationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
 
-    print(
-        "Address visibility thingy: ${addressVisibilityAnimationController
-            .status}");
-
     widget.scaleAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         sizeAnimationController.forward();
